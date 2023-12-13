@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:zego_task_01/screens/audio_call_screen.dart';
-import 'package:zego_task_01/screens/video_call_screen.dart';
+import 'dart:math';
+
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
 class home_screen extends StatelessWidget {
   home_screen({super.key});
@@ -36,24 +37,13 @@ class home_screen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => video_call_screen(
-                                name: contacts[index],
-                                number: contacts_number[index],
-                              )),
+                          builder: (context) => CallPage(callID: 'milan')),
                     );
                   },
                   icon: Icon(Icons.video_call),
                 ),
                 IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => audio_call_screen(
-                              name: contacts[index],
-                              number: contacts_number[index])),
-                    );
-                  },
+                  onPressed: () {},
                   icon: Icon(Icons.call),
                 ),
               ],
@@ -81,4 +71,24 @@ void _navigateToContactDetails(BuildContext context, String contactName) {
       content: Text('Tapped on $contactName'),
     ),
   );
+}
+
+String user_id = Random().nextInt(10000).toString();
+
+class CallPage extends StatelessWidget {
+  const CallPage({Key? key, required this.callID}) : super(key: key);
+  final String callID;
+  @override
+  Widget build(BuildContext context) {
+    return ZegoUIKitPrebuiltCall(
+        appID:
+            0000000, // Fill in the appID that you get from ZEGOCLOUD Admin Console.
+        appSign:
+            'use yours', // Fill in the appSign that you get from ZEGOCLOUD Admin Console.
+        userID: 'user_id',
+        userName: 'user_1',
+        callID: callID,
+        // You can also use groupVideo/groupVoice/oneOnOneVoice to make more types of calls.
+        config: ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall());
+  }
 }
